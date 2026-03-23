@@ -1,0 +1,2154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Fitness Journey</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --plum: #3D2645;
+    --rose: #C2506A;
+    --mauve: #6B4C72;
+    --sage: #5C7F6A;
+    --sage-lt: #D6EAE0;
+    --cream: #FDF6F0;
+    --blush: #F2D0D8;
+    --blush-deep: #E8B4C0;
+    --gold: #C9973A;
+    --dark: #1C1C1C;
+    --grey: #888;
+    --lgrey: #e8e8e8;
+    --white: #ffffff;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--dark);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── decorative background ── */
+  body::before {
+    content: '';
+    position: fixed;
+    top: -200px; right: -200px;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(194,80,106,0.08) 0%, transparent 70%);
+    pointer-events: none; z-index: 0;
+  }
+  body::after {
+    content: '';
+    position: fixed;
+    bottom: -150px; left: -150px;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(92,127,106,0.08) 0%, transparent 70%);
+    pointer-events: none; z-index: 0;
+  }
+
+  /* ── HERO HEADER ── */
+  .hero {
+    background: linear-gradient(135deg, var(--plum) 0%, var(--mauve) 60%, #8B5E8A 100%);
+    padding: 48px 32px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Ccircle cx='30' cy='30' r='20'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    pointer-events: none;
+  }
+  .hero-accent {
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 280px; height: 280px;
+    background: radial-gradient(circle, rgba(194,80,106,0.25) 0%, transparent 70%);
+  }
+  .hero-inner { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; }
+  .hero-tag {
+    display: inline-block;
+    background: rgba(194,80,106,0.3);
+    color: var(--blush);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 14px;
+    border: 1px solid rgba(194,80,106,0.4);
+  }
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(36px, 5vw, 54px);
+    font-weight: 300;
+    color: var(--white);
+    line-height: 1.1;
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+  }
+  .hero h1 em { color: var(--blush); font-style: italic; }
+  .hero-sub {
+    color: rgba(242,208,216,0.75);
+    font-size: 13px;
+    font-weight: 300;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── TABS ── */
+  .tabs-wrap {
+    background: var(--plum);
+    position: sticky; top: 0; z-index: 100;
+    box-shadow: 0 2px 20px rgba(61,38,69,0.3);
+  }
+  .tabs {
+    display: flex;
+    max-width: 900px;
+    margin: 0 auto;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab {
+    flex-shrink: 0;
+    padding: 14px 22px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(242,208,216,0.6);
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all 0.25s ease;
+    white-space: nowrap;
+  }
+  .tab:hover { color: var(--blush); }
+  .tab.active {
+    color: var(--blush);
+    border-bottom-color: var(--rose);
+  }
+
+  /* ── MAIN CONTENT ── */
+  .main { max-width: 900px; margin: 0 auto; padding: 32px 20px 60px; position: relative; z-index: 1; }
+
+  .section { display: none; animation: fadeUp 0.4s ease; }
+  .section.active { display: block; }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── CARDS ── */
+  .card {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 24px 28px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 12px rgba(61,38,69,0.07);
+    border: 1px solid rgba(194,80,106,0.08);
+  }
+  .card-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--plum);
+    margin-bottom: 6px;
+  }
+  .card-sub {
+    font-size: 12px;
+    color: var(--grey);
+    margin-bottom: 20px;
+    letter-spacing: 0.03em;
+  }
+
+  /* ── SECTION HEADING ── */
+  .section-heading {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .section-heading-bar {
+    width: 4px; height: 28px;
+    background: var(--rose);
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+  .section-heading h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px;
+    font-weight: 600;
+    color: var(--plum);
+  }
+  .section-heading span {
+    font-size: 11px;
+    color: var(--grey);
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* ── STATS ROW ── */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+  .stat-card {
+    background: var(--white);
+    border-radius: 14px;
+    padding: 18px 16px;
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(61,38,69,0.07);
+    border: 1px solid var(--lgrey);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .stat-card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(61,38,69,0.12); }
+  .stat-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 38px;
+    font-weight: 600;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .stat-label { font-size: 11px; color: var(--grey); font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; }
+  .stat-card.rose .stat-number  { color: var(--rose); }
+  .stat-card.plum .stat-number  { color: var(--plum); }
+  .stat-card.sage .stat-number  { color: var(--sage); }
+  .stat-card.gold .stat-number  { color: var(--gold); }
+  .stat-card.mauve .stat-number { color: var(--mauve); }
+
+  /* ── FORM ELEMENTS ── */
+  label { display: block; font-size: 12px; font-weight: 600; color: var(--mauve); margin-bottom: 5px; letter-spacing: 0.05em; text-transform: uppercase; }
+  input, select, textarea {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1.5px solid var(--lgrey);
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--dark);
+    background: var(--cream);
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+  }
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--rose);
+    box-shadow: 0 0 0 3px rgba(194,80,106,0.1);
+  }
+  textarea { resize: vertical; min-height: 70px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px; }
+  .form-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-bottom: 16px; }
+  .form-group { margin-bottom: 16px; }
+
+  /* ── BUTTONS ── */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s ease;
+    letter-spacing: 0.03em;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--rose), #A83D57);
+    color: var(--white);
+    box-shadow: 0 4px 14px rgba(194,80,106,0.35);
+  }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(194,80,106,0.45); }
+  .btn-secondary {
+    background: var(--cream);
+    color: var(--plum);
+    border: 1.5px solid var(--blush-deep);
+  }
+  .btn-secondary:hover { background: var(--blush); }
+  .btn-danger { background: #fee; color: #c0392b; border: 1.5px solid #f5c6c6; font-size: 12px; padding: 7px 14px; }
+  .btn-danger:hover { background: #fdd; }
+  .btn-sm { padding: 7px 16px; font-size: 12px; }
+
+  /* ── LOG LIST ── */
+  .log-entry {
+    background: var(--cream);
+    border-radius: 12px;
+    padding: 16px 18px;
+    margin-bottom: 10px;
+    border-left: 4px solid var(--rose);
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 14px;
+    align-items: start;
+    animation: fadeUp 0.3s ease;
+  }
+  .log-entry.workout-b { border-left-color: var(--sage); }
+  .log-badge {
+    width: 38px; height: 38px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .log-badge.a { background: var(--blush); color: var(--rose); }
+  .log-badge.b { background: var(--sage-lt); color: var(--sage); }
+  .log-date { font-size: 11px; color: var(--grey); margin-bottom: 2px; }
+  .log-title { font-weight: 600; font-size: 14px; color: var(--plum); margin-bottom: 4px; }
+  .log-meta { display: flex; gap: 12px; flex-wrap: wrap; }
+  .log-meta span { font-size: 12px; color: var(--mauve); }
+  .log-notes { font-size: 12px; color: var(--grey); margin-top: 4px; font-style: italic; }
+  .log-delete { color: var(--grey); cursor: pointer; font-size: 18px; line-height: 1; padding: 4px; }
+  .log-delete:hover { color: var(--rose); }
+
+  /* ── RATING WIDGET ── */
+  .rating-row { display: flex; gap: 8px; flex-wrap: wrap; }
+  .rating-btn {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    border: 1.5px solid var(--lgrey);
+    background: var(--white);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--grey);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .rating-btn:hover { border-color: var(--rose); color: var(--rose); }
+  .rating-btn.selected { background: var(--rose); border-color: var(--rose); color: var(--white); }
+  .rating-btn.selected.sage { background: var(--sage); border-color: var(--sage); }
+
+  /* ── STRENGTH TABLE ── */
+  .exercise-block { margin-bottom: 24px; }
+  .exercise-block-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--blush);
+  }
+  .exercise-block-title h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--plum);
+  }
+  .exercise-block-title .workout-tag {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    border-radius: 20px;
+  }
+  .workout-tag.a { background: var(--blush); color: var(--rose); }
+  .workout-tag.b { background: var(--sage-lt); color: var(--sage); }
+
+  .exercise-row {
+    display: grid;
+    grid-template-columns: 1fr 80px 80px 80px;
+    gap: 8px;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--lgrey);
+  }
+  .exercise-row:last-child { border-bottom: none; }
+  .exercise-name { font-size: 13px; font-weight: 500; color: var(--dark); }
+  .exercise-input {
+    padding: 7px 10px !important;
+    font-size: 13px !important;
+    text-align: center;
+    background: var(--cream) !important;
+  }
+  .exercise-week-label { font-size: 10px; text-align: center; color: var(--grey); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+
+  /* ── MEASUREMENTS ── */
+  .measurement-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 14px;
+  }
+  .measurement-item {
+    background: var(--cream);
+    border-radius: 12px;
+    padding: 16px;
+    border: 1px solid rgba(194,80,106,0.1);
+  }
+  .measurement-item label { font-size: 11px; margin-bottom: 8px; }
+  .measurement-value {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--plum);
+    margin: 4px 0 2px;
+  }
+  .measurement-change { font-size: 11px; font-weight: 600; }
+  .measurement-change.pos { color: #c0392b; }
+  .measurement-change.neg { color: var(--sage); }
+
+  /* ── MOOD CHART ── */
+  .mood-chart { position: relative; height: 180px; margin: 20px 0; }
+  .mood-chart canvas { width: 100% !important; }
+  .mood-legend { display: flex; gap: 20px; justify-content: center; margin-top: 10px; }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--grey); }
+  .legend-dot { width: 10px; height: 10px; border-radius: 50%; }
+
+  /* ── HABIT CHECKLIST ── */
+  .habit-list { list-style: none; }
+  .habit-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--lgrey);
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .habit-item:last-child { border-bottom: none; }
+  .habit-check {
+    width: 22px; height: 22px;
+    border-radius: 6px;
+    border: 2px solid var(--blush-deep);
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+    font-size: 13px;
+    color: transparent;
+  }
+  .habit-item.checked .habit-check {
+    background: var(--sage);
+    border-color: var(--sage);
+    color: white;
+  }
+  .habit-text { font-size: 14px; color: var(--dark); }
+  .habit-item.checked .habit-text { color: var(--grey); text-decoration: line-through; }
+  .habit-freq { font-size: 11px; color: var(--grey); margin-left: auto; flex-shrink: 0; }
+
+  /* ── PROGRESS BAR ── */
+  .progress-bar-wrap { background: var(--lgrey); border-radius: 8px; height: 8px; overflow: hidden; margin-top: 8px; }
+  .progress-bar-fill { height: 100%; border-radius: 8px; background: linear-gradient(90deg, var(--rose), var(--mauve)); transition: width 0.6s ease; }
+
+  /* ── PHASE INDICATOR ── */
+  .phase-row { display: flex; gap: 8px; margin-bottom: 24px; }
+  .phase-item {
+    flex: 1;
+    padding: 14px 12px;
+    border-radius: 12px;
+    text-align: center;
+    border: 2px solid var(--lgrey);
+    transition: all 0.2s;
+  }
+  .phase-item.active-phase {
+    border-color: var(--rose);
+    background: var(--blush);
+  }
+  .phase-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--plum);
+  }
+  .phase-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--mauve); margin-bottom: 2px; }
+  .phase-weeks { font-size: 10px; color: var(--grey); }
+
+  /* ── EMPTY STATE ── */
+  .empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--grey);
+  }
+  .empty-state-icon { font-size: 40px; margin-bottom: 12px; }
+  .empty-state p { font-size: 14px; }
+
+  /* ── TOAST ── */
+  .toast {
+    position: fixed;
+    bottom: 24px; right: 24px;
+    background: var(--plum);
+    color: var(--white);
+    padding: 14px 20px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 500;
+    box-shadow: 0 8px 30px rgba(61,38,69,0.4);
+    transform: translateY(80px);
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    z-index: 999;
+    display: flex; align-items: center; gap: 8px;
+    max-width: 280px;
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+
+  /* ── NOTE BOX ── */
+  .note-box {
+    background: var(--blush);
+    border-left: 4px solid var(--rose);
+    border-radius: 0 10px 10px 0;
+    padding: 14px 16px;
+    font-size: 13px;
+    color: var(--plum);
+    margin-bottom: 20px;
+    line-height: 1.6;
+  }
+  .note-box.sage {
+    background: var(--sage-lt);
+    border-left-color: var(--sage);
+    color: #2d4a38;
+  }
+
+  /* ── WEEKLY CALENDAR STRIP ── */
+  .week-strip {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 20px;
+  }
+  .week-day {
+    flex: 1;
+    text-align: center;
+    padding: 10px 4px;
+    border-radius: 10px;
+    border: 1.5px solid var(--lgrey);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--grey);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .week-day.workout-day { background: var(--blush); border-color: var(--rose); color: var(--rose); }
+  .week-day.rest-day { background: var(--sage-lt); border-color: var(--sage); color: var(--sage); }
+  .week-day span { display: block; font-size: 10px; font-weight: 400; margin-top: 3px; letter-spacing: 0; text-transform: none; }
+
+  /* ── WORKOUT DETAILS ── */
+  .workout-selector {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+  .workout-select-btn {
+    padding: 20px 16px;
+    border-radius: 16px;
+    border: 2px solid var(--lgrey);
+    background: var(--white);
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s ease;
+  }
+  .workout-select-btn:hover { border-color: var(--rose); transform: translateY(-2px); }
+  .workout-select-btn.active-wo { border-color: var(--rose); background: var(--blush); }
+  .workout-select-btn.active-wo.b-btn { border-color: var(--sage); background: var(--sage-lt); }
+  .workout-select-btn .wo-letter {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 42px;
+    font-weight: 600;
+    line-height: 1;
+    color: var(--rose);
+    margin-bottom: 4px;
+  }
+  .workout-select-btn.b-btn .wo-letter { color: var(--sage); }
+  .workout-select-btn .wo-name { font-size: 12px; font-weight: 700; color: var(--plum); text-transform: uppercase; letter-spacing: 0.06em; }
+  .workout-select-btn .wo-sub  { font-size: 11px; color: var(--grey); margin-top: 2px; }
+
+  .phase-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+  }
+  .phase-label.rose { background: var(--blush); color: var(--rose); }
+  .phase-label.sage { background: var(--sage-lt); color: var(--sage); }
+
+  .wo-section-title {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--grey);
+    margin: 20px 0 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .wo-section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--lgrey);
+  }
+
+  .exercise-card {
+    background: var(--cream);
+    border-radius: 12px;
+    margin-bottom: 10px;
+    overflow: hidden;
+    border: 1px solid rgba(194,80,106,0.08);
+  }
+  .exercise-card.sage-card { border-color: rgba(92,127,106,0.12); }
+  .exercise-header {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .exercise-number {
+    width: 28px; height: 28px;
+    border-radius: 8px;
+    background: var(--blush);
+    color: var(--rose);
+    font-size: 12px;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .exercise-card.sage-card .exercise-number { background: var(--sage-lt); color: var(--sage); }
+  .exercise-header-text { flex: 1; }
+  .exercise-header-name { font-size: 14px; font-weight: 600; color: var(--plum); }
+  .exercise-header-meta { font-size: 11px; color: var(--grey); margin-top: 2px; }
+  .exercise-chevron {
+    font-size: 16px;
+    color: var(--grey);
+    transition: transform 0.25s ease;
+    flex-shrink: 0;
+  }
+  .exercise-card.open .exercise-chevron { transform: rotate(180deg); }
+
+  .exercise-body {
+    display: none;
+    padding: 0 16px 16px;
+    border-top: 1px solid var(--lgrey);
+    animation: fadeUp 0.25s ease;
+  }
+  .exercise-card.open .exercise-body { display: block; }
+
+  .exercise-sets-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin: 14px 0 12px;
+  }
+  .exercise-set-item {
+    background: var(--white);
+    border-radius: 10px;
+    padding: 10px;
+    text-align: center;
+    border: 1px solid var(--lgrey);
+  }
+  .exercise-set-value {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--plum);
+    line-height: 1;
+  }
+  .exercise-set-label { font-size: 10px; color: var(--grey); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 3px; }
+
+  .cue-list { list-style: none; margin-top: 8px; }
+  .cue-list li {
+    font-size: 13px;
+    color: var(--dark);
+    padding: 5px 0 5px 20px;
+    position: relative;
+    line-height: 1.5;
+  }
+  .cue-list li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--rose);
+    font-weight: 700;
+  }
+  .exercise-card.sage-card .cue-list li::before { color: var(--sage); }
+
+  .postpartum-tip {
+    background: var(--blush);
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin-top: 10px;
+    font-size: 12px;
+    color: var(--plum);
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+    line-height: 1.5;
+  }
+  .exercise-card.sage-card .postpartum-tip { background: var(--sage-lt); color: #2d4a38; }
+
+  .cooldown-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--lgrey);
+  }
+  .cooldown-item:last-child { border-bottom: none; }
+  .cooldown-icon { font-size: 22px; flex-shrink: 0; }
+  .cooldown-name { font-size: 13px; font-weight: 600; color: var(--plum); }
+  .cooldown-time { font-size: 11px; color: var(--grey); }
+
+  @media (max-width: 600px) {
+    .form-row, .form-row-3 { grid-template-columns: 1fr; }
+    .hero { padding: 32px 20px 28px; }
+    .exercise-row { grid-template-columns: 1fr 70px 70px; }
+    .phase-row { flex-wrap: wrap; }
+    .stats-row { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  /* ── CLEAR STORAGE BTN ── */
+  .danger-zone {
+    background: #fff5f5;
+    border: 1px solid #fdd;
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-top: 24px;
+  }
+  .danger-zone h4 { color: #c0392b; font-size: 13px; margin-bottom: 8px; }
+  .danger-zone p  { font-size: 12px; color: var(--grey); margin-bottom: 12px; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-accent"></div>
+  <div class="hero-inner">
+    <div class="hero-tag">Post-Partum · 5 Months · Breastfeeding</div>
+    <h1>My Fitness <em>Journey</em></h1>
+    <p class="hero-sub">2 Sessions/Week &nbsp;·&nbsp; Home Training &nbsp;·&nbsp; Strength · Cardio · Wellbeing</p>
+  </div>
+</div>
+
+<div class="tabs-wrap">
+  <div class="tabs">
+    <div class="tab active" onclick="showTab('dashboard')">Dashboard</div>
+    <div class="tab" onclick="showTab('workouts')">Workouts</div>
+    <div class="tab" onclick="showTab('log')">Log Workout</div>
+    <div class="tab" onclick="showTab('history')">History</div>
+    <div class="tab" onclick="showTab('strength')">Strength</div>
+    <div class="tab" onclick="showTab('measurements')">Body</div>
+    <div class="tab" onclick="showTab('mood')">Mood & Energy</div>
+    <div class="tab" onclick="showTab('habits')">Habits</div>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- ══ DASHBOARD ══ -->
+  <div id="tab-dashboard" class="section active">
+
+    <div class="stats-row">
+      <div class="stat-card rose">
+        <div class="stat-number" id="stat-total">0</div>
+        <div class="stat-label">Sessions Done</div>
+      </div>
+      <div class="stat-card plum">
+        <div class="stat-number" id="stat-week">1</div>
+        <div class="stat-label">Current Week</div>
+      </div>
+      <div class="stat-card sage">
+        <div class="stat-number" id="stat-streak">0</div>
+        <div class="stat-label">This Week</div>
+      </div>
+      <div class="stat-card gold">
+        <div class="stat-number" id="stat-mood">—</div>
+        <div class="stat-label">Avg Mood</div>
+      </div>
+      <div class="stat-card mauve">
+        <div class="stat-number" id="stat-energy">—</div>
+        <div class="stat-label">Avg Energy</div>
+      </div>
+    </div>
+
+    <div class="phase-row">
+      <div class="phase-item" id="phase-1">
+        <div class="phase-title">Phase 1</div>
+        <div class="phase-weeks">Weeks 1–4</div>
+        <div class="phase-num">Rebuild</div>
+      </div>
+      <div class="phase-item" id="phase-2">
+        <div class="phase-title">Phase 2</div>
+        <div class="phase-weeks">Weeks 5–8</div>
+        <div class="phase-num">Strengthen</div>
+      </div>
+      <div class="phase-item" id="phase-3">
+        <div class="phase-title">Phase 3</div>
+        <div class="phase-weeks">Weeks 9–12</div>
+        <div class="phase-num">Progress</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Programme Progress</div>
+      <div class="card-sub">Based on 24 sessions over 12 weeks</div>
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+        <span style="font-size:13px; color:var(--grey)">Completion</span>
+        <span style="font-size:13px; font-weight:700; color:var(--rose)" id="progress-pct">0%</span>
+      </div>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill" id="progress-fill" style="width:0%"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">This Week</div>
+      <div class="card-sub">Your 7-day schedule</div>
+      <div class="week-strip">
+        <div class="week-day workout-day">Mon<span>Workout A</span></div>
+        <div class="week-day rest-day">Tue<span>Walk</span></div>
+        <div class="week-day rest-day">Wed<span>Rest/Yoga</span></div>
+        <div class="week-day workout-day">Thu<span>Workout B</span></div>
+        <div class="week-day rest-day">Fri<span>Walk</span></div>
+        <div class="week-day rest-day">Sat<span>Optional</span></div>
+        <div class="week-day rest-day">Sun<span>Rest</span></div>
+      </div>
+    </div>
+
+    <div class="note-box">
+      💗 <strong>Remember:</strong> You are 5 months post-partum and breastfeeding. Showing up is enough. Every session is a victory.
+    </div>
+
+    <div class="card">
+      <div class="card-title">Recent Activity</div>
+      <div id="dashboard-recent"></div>
+    </div>
+  </div>
+
+  <!-- ══ WORKOUTS ══ -->
+  <div id="tab-workouts" class="section">
+    <div class="section-heading">
+      <div class="section-heading-bar"></div>
+      <div><h2>Your Workouts</h2><span>Everything you need to know</span></div>
+    </div>
+
+    <div class="workout-selector">
+      <div class="workout-select-btn active-wo" onclick="selectWorkout('A')">
+        <div class="wo-letter">A</div>
+        <div class="wo-name">Workout A</div>
+        <div class="wo-sub">Strength & Core Rebuild</div>
+      </div>
+      <div class="workout-select-btn b-btn" onclick="selectWorkout('B')">
+        <div class="wo-letter">B</div>
+        <div class="wo-name">Workout B</div>
+        <div class="wo-sub">Cardio, Strength & Mood</div>
+      </div>
+    </div>
+
+    <!-- WORKOUT A DETAIL -->
+    <div id="workout-detail-A">
+      <div class="note-box" style="margin-bottom:16px;">
+        💗 <strong>Before you start:</strong> Feed or pump before this session. Wear a supportive sports bra. This session focuses on rebuilding strength safely from the ground up.
+      </div>
+
+      <div class="phase-label rose">⏱ 25–30 minutes total · 3 rounds · Home</div>
+
+      <div class="wo-section-title">Warm-Up · 5 minutes</div>
+
+      <div class="exercise-card" onclick="toggleExercise(this)">
+        <div class="exercise-header">
+          <div class="exercise-number">W1</div>
+          <div class="exercise-header-text">
+            <div class="exercise-header-name">March on the Spot</div>
+            <div class="exercise-header-meta">1 set · 60 seconds</div>
+          </div>
+          <div class="exercise-chevron">▾</div>
+        </div>
+        <div class="exercise-body">
+          <div class="exercise-sets-row">
+            <div class="exercise-set-item"><div class="exercise-set-value">1</div><div class="exercise-set-label">Set</div></div>
+            <div class="exercise-set-item"><div class="exercise-set-value">60s</div><div class="exercise-set-label">Duration</div></div>
+            <div class="exercise-set-item"><div class="exercise-set-value">—</div><div class="exercise-set-label">Rest</div></div>
+          </div>
+          <ul class="cue-list">
+            <li>Lift your knees to hip height with each step</li>
+            <li>Swing your arms naturally as you march</li>
+            <li>Keep your posture tall — shoulders back and down</li>
+            <li>Start gentle and gradually build your pace</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="exercise-card" onclick="toggleExercise(this)">
+        <div class="exercise-header">
+          <div class="exercise-number">W2</div>
+          <div class="exercise-header-text">
+            <div class="exercise-header-name">Hip Circles (Standing)</div>
+            <div class="exercise-header-meta">1 set · 30 seconds each direction</div>
+          </div>
+          <div class="exercise-chevron">▾</div>
+        </div>
+        <div class="exercise-body">
+          <div class="exercise-sets-row">
+            <div class="exercise-set-item"><div class="exercise-set-value">1</div><div class="exercise-set-label">Set</div></div>
+            <div class="exercise-set-item"><div class="exercise-set-value">30s</div><div class="exercise-set-label">Each way</div></div>
+            <div class="exercise-set-item"><div class="exercise-set-value">—</div><div class="exercise-set-label">Rest</div></div>
+          </div>
+          <ul class="cue-list">
+            <li>Stand with feet hip-width apart, hands on hips</li>
+            <li>Draw big slow circles with your hips — like a hula hoop</li>
+            <li>Go clockwise for 30s, then anti-clockwise</li>
+            <li>Keep your upper body relatively still</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="exercise-card" onclick="toggleExercise(this)">
+        <div class="exercise-header">
+          <div class="exercise-number">W3</div>
+          <div class="exercise-header-text">
+            <div class="exercise-header-name">Cat-Cow Stretch</div>
+            <div class="exercise-header-meta">1 set · 8 slow reps</div>
+          </div>
+          <div class="exercise-chevron">▾</div>
+        </div>
+        <div class="exercise-body">
+          <div class="exercise-sets-row">
+            <div class="exercise-set-item"><div class="exercise-set-value">1</div><div class="exercise-set-label">Set</div></div>
+            <div class="exercise-set-item"><div class="exercise-set-value">8</div><div class="exercise-set-label">Reps</div></div>
+            <div class="exercise-set-item"><div class="exercise-set-value">—</div><div class="exercise-set-label">Rest</div></div>
+          </div>
+          <ul class="cue-list">
+            <li>Start on hands and knees — wrists under shoulders, knees under hips</li>
+            <li>Inhale: let your belly drop, lift your head and tailbone (cow)</li>
+            <li>Exhale: round your back up to the ceiling, tuck chin and tailbone (cat)</li>
+            <li>Move slowly and breathe with each rep — reconnect with your core</li>
+          </ul>
+          <div class="postpartum-tip">💗 <span>This is especially beneficial post-partum — it gently mobilises your spine and helps reconnect your breath with your deep core muscles.</span></div>
+        </div>
+      </div>
+
+      <div class="wo-section-title">Main Workout · 3 Rounds · ~20 minutes</div>
+
+      <div class="exercise-card" onclick="toggleExercise(this)">
+        <div class="exercise-header">
+          <div class="exercise-number">1</div>
+          <div class="exercise-header-text">
+            <div class="exercise-header-name">Glute Bridge</div>
+            <div class="exercise-header-meta">3 sets · 15 reps · 30s rest · Optional: DB on hips</div>
+          </div>
+          <div class="exercise-chevron">▾</div>
+        </div>
+        <div class="exercise-body">
+          <div class="exercise-sets-row">
+            <div class="exercise-set-item"><div class="exercise-set-value">3</div><div class="exercise-set-label">Sets</div></div>
+            <div class="exercise-set-item"><div class="exercise-set-value">15</div><div class="exercise-set-label">Reps</div></div>
+            <div class="exercise-set-item"><div class="exercise-set-value">30s</div><div class="exercise-set-label">Rest</div></div>
+          </div>
+          <ul class="cue-list">
+            <li>Lie on your back, knees bent, feet flat on the floor hip-width apart</li>
+            <li>Press your feet into the floor and drive your hips up to the ceiling</li>
+            <li>Squeeze your glutes hard at the top — hold for 1–2 seconds</li>
+            <li>Lower slowly with control — don't let your hips crash down</li>
+            <li>Keep your core gently braced throughout — breathe out as you lift</li>
+            <li>To add resistance: place a dumbbell or kettlebell across your hips</li>
+          </ul>
+          <div class="postpartum-tip">💗 <span>One of the safest and most effective post-partum exercises. Rebuilds glute strength and gently activates the pelvic floor. Exhale on the lift to engage deep core.</span></div>
+        </div>
+      </div>
+
+      <div class="exercise-card" onclick="toggleExercise(this)">
+        <div class="exercise-header">
+          <div class="exercise-number">2</div>
+          <div class="exercise-header-text">
+            <div class="exercise-header-name">Goblet Squat</div>
+            <div class="exercise-header-meta">3 sets · 12 reps · 30s rest · KB or DB</div>
+          </div>
+          <div class="exercise-chevron">▾</div>
+        </div>
+        <div class="exercise-body">
+          <div class="exercise-sets-row">
+            <div class="exercise-set-item"><div class="exercise-set-value">3</div><div class="exercise-set-label">Sets</div></div>
+            <div class="exercise-set-item"><div class="exercise-set-value">12</div><div class="exercise-set-label">Reps</div></div>
+            <div class="exercise-set-item"><div class="exercise-set-value">30s</div><div class="exercise-set-label">Rest</div></div>
+          </div>
+          <ul class="cue-list">
+            <li>Hold a KB or DB at your chest with both hands, elbows pointing down</li>
+            <li>Feet shoulder-width apart, toes turned out slightly</li>
+            <li>Sit back and down like lowering onto a chair — chest stays tall</li>
+            <li>Push your knees out in line with your toes as you descend</li>
+            <li>Drive through your heels to stand back up</li>
+            <li>Don't have a weight? Use bodyweight — still very effective</li>
+          </ul>
+          <div class="postpartum-tip">💗 <span>Holding the weight at the chest helps keep your torso upright, reducing pressure on the pelvic floor compared to a back squat. Start light and build gradually.</span></div>
+        </div>
+      </div>
+
+      <div class="exercise-card" onclick="toggleExercise(this)">
+        <div class="exercise-header">
+          <div class="exercise-number">3</div>
+          <div class="exercise-header-text">
+            <div class="exercise-header-name">Resistance Band Row</div>
+            <div class="exercise-header-meta">3 sets · 12 reps · 30s rest · Band anchored to door</div>
+          </div>
+          <div class="exercise-chevron">▾</div>
+        </div>
+        <div class="exercise-body">
+          <div class="exercise-sets-row">
+            <div class="exercise-set-item"><div class="exercise-set-value">3</div><div class="exercise-set-label">Sets</div></div>
+            <div class="exercise-set-item"><div class="exercise-set-value">12</div><div class="exercise-set-label">Reps</div></div>
+            <div class="exercise-set-item"><div class="exercise-set-value">30s</div><div class="exercise-set-label">Rest</div></div>
+          </div>
+          <ul class="cue-list">
+            <li>Anchor your band at chest height in a door (or around a sturdy post)</li>
+            <li>Stand or sit facing the anchor point, holding both ends of the band</li>
+            <li>Pull both hands toward your lower ribs, driving elbows back</li>
+            <li>Squeeze your shoulder blades together at the end of the pull</li>
+            <li>Slowly extend arms back to start — control the band, don't let it snap</li>
+            <li>Keep your back straight — don't round or lean back excessively</li>
+          </ul>
+          <div class="postpartum-tip">💗 <span>Upper back strength is vital for new mums — hours of feeding and carrying can cause rounded shoulders and neck pain. This directly counteracts that.</span></div>
+        </div>
+      </div>
+
+      <div class="exercise-card" onclick="toggleExercise(this)">
+        <div class="exercise-header">
+          <div class="exercise-number">4</div>
+          <div class="exercise-header-text">
+            <div class="exercise-header-name">Dumbbell Shoulder Press (Seated)</div>
+            <div class="exercise-header-meta">3 sets · 10 reps · 30s rest</div>
+          </div>
+          <div class="exercise-chevron">▾</div>
+        </div>
+        <div class="exercise-body">
+          <div class="exercise-sets-row">
+            <div class="exercise-set-item"><div class="exercise-set-value">3</div><div class="exercise-set-label">Sets</div></div>
+            <div class="exercise-set-item"><div class="exercise-set-value">10</div><div class="exercise-set-label">Reps</div></div>
+            <div class="exercise-set-item"><div class="exercise-set-value">30s</div><div class="exercise-set-label">Rest</div></div>
+          </div>
+          <ul class="cue-list">
+            <li>Sit on a chair or the floor with a straight back — no leaning against a back rest</li>
+            <li>Hold a dumbbell in each hand at shoulder height, palms facing forward</li>
+            <li>Press both arms overhead until almost fully extended — don't lock out hard</li>
+            <li>Lower slowly back to shoulder height with control</li>
+            <li>Keep your core gently braced — don't arch your lower back</li>
+          </ul>
+          <div class="postpartum-tip">💗 <span>Seated is intentional — it reduces intra-abdominal pressure compared to standing, making it safer while your core is still rebuilding.</span></div>
+        </div>
+      </div>
+
+      <div class="exercise-card" onclick="toggleExercise(this)">
+        <div class="exercise-header">
+          <div class="exercise-number">5</div>
+          <div class="exercise-header-text">
+            <div class="exercise-header-name">Dead Bug</div>
+            <div class="exercise-header-meta">3 sets · 8 reps each side · 30s rest · Bodyweight</div>
+          </div>
+          <div class="exercise-chevron">▾</div>
+        </div>
+        <div class="exercise-body">
+          <div class="exercise-sets-row">
+            <div class="exercise-set-item"><div class="exercise-set-value">3</div><div class="exercise-set-label">Sets</div></div>
+            <div class="exercise-set-item"><div class="exercise-set-value">8</div><div class="exercise-set-label">Each side</div></div>
+            <div class="exercise-set-item"><div class="exercise-set-value">30s</div><div class="exercise-set-label">Rest</div></div>
+          </div>
+          <ul class="cue-list">
+            <li>Lie on your back with arms pointing straight up toward the ceiling</li>
+            <li>Lift both legs so knees are above hips, bent at 90 degrees (tabletop position)</li>
+            <li>Slowly lower your right arm back toward the floor while extending your left leg</li>
+            <li>Stop before either touches the floor — keep your lower back pressed down</li>
+            <li>Return to start, then repeat on the opposite side (left arm, right leg)</li>
+            <li>Exhale fully as you lower — this is the key to activating your deep core</li>
+          </ul>
+          <div class="postpartum-tip">💗 <span>This is one of the best exercises for post-partum core rehabilitation. It works the deep stabilising muscles without putting pressure on a healing abdominal wall. Go slowly.</span></div>
+        </div>
+      </div>
+
+      <div class="exercise-card" onclick="toggleExercise(this)">
+        <div class="exercise-header">
+          <div class="exercise-number">6</div>
+          <div class="exercise-header-text">
+            <div class="exercise-header-name">Side-Lying Clamshell</div>
+            <div class="exercise-header-meta">3 sets · 15 reps each side · 20s rest · Band optional</div>
+          </div>
+          <div class="exercise-chevron">▾</div>
+        </div>
+        <div class="exercise-body">
+          <div class="exercise-sets-row">
+            <div class="exercise-set-item"><div class="exercise-set-value">3</div><div class="exercise-set-label">Sets</div></div>
+            <div class="exercise-set-item"><div class="exercise-set-value">15</div><div class="exercise-set-label">Each side</div></div>
+            <div class="exercise-set-item"><div class="exercise-set-value">20s</div><div class="exercise-set-label">Rest</div></div>
+          </div>
+          <ul class="cue-list">
+            <li>Lie on your side with hips stacked, knees bent to about 45 degrees</li>
+            <li>Keep your feet together throughout the movement</li>
+            <li>Rotate your top knee up toward the ceiling as far as you can — like a clam opening</li>
+            <li>Hold at the top for a second, squeezing the glute</li>
+            <li>Lower slowly back to start — don't let your pelvis roll backwards</li>
+            <li>Add a resistance band just above the knees to increase difficulty</li>
+          </ul>
+          <div class="postpartum-tip">💗 <span>Hip abductor weakness is extremely common post-partum. Strong hip muscles protect your knees, back and pelvic floor. Don't skip these!</span></div>
+        </div>
+      </div>
+
+      <div class="wo-section-title">Cool-Down · 3 minutes</div>
+      <div class="card" style="padding:16px 20px;">
+        <div class="cooldown-item">
+          <div class="cooldown-icon">🧘</div>
+          <div><div class="cooldown-name">Child's Pose</div><div class="cooldown-time">Hold 30–40 seconds — breathe deeply into your lower back</div></div>
+        </div>
+        <div class="cooldown-item">
+          <div class="cooldown-icon">🌿</div>
+          <div><div class="cooldown-name">Seated Hip Stretch (Figure-4)</div><div class="cooldown-time">30 seconds each side — sit cross-legged and lean forward gently</div></div>
+        </div>
+        <div class="cooldown-item">
+          <div class="cooldown-icon">💫</div>
+          <div><div class="cooldown-name">Chest Opener</div><div class="cooldown-time">30 seconds — stand in a doorway, arms at 90°, gently lean forward</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WORKOUT B DETAIL -->
+    <div id="workout-detail-B" style="display:none;">
+      <div class="note-box sage" style="margin-bottom:16px;">
+        🌿 <strong>Before you start:</strong> This session has more movement and energy — keep intensity moderate. If anything feels wrong or uncomfortable, stop and rest. You know your body best.
+      </div>
+
+      <div class="phase-label sage">⏱ 25–30 minutes total · Circuit style · 3 Rounds · Home</div>
+
+      <div class="wo-section-title">Warm-Up · 5 minutes</div>
+
+      <div class="exercise-card sage-card" onclick="toggleExercise(this)">
+        <div class="exercise-header">
+          <div class="exercise-number">W1</div>
+          <div class="exercise-header-text">
+            <div class="exercise-header-name">Step Touch Side-to-Side</div>
+            <div class="exercise-header-meta">1 set · 45 seconds</div>
+          </div>
+          <div class="exercise-chevron">▾</div>
+        </div>
+        <div class="exercise-body">
+          <div class="exercise-sets-row">
+            <div class="exercise-set-item"><div class="exercise-set-value">1</div><div class="exercise-set-label">Set</div></div>
+            <div class="exercise-set-item"><div class="exercise-set-value">45s</div><div class="exercise-set-label">Duration</div></div>
+            <div class="exercise-set-item"><div class="exercise-set-value">—</div><div class="exercise-set-label">Rest</div></div>
+          </div>
+          <ul class="cue-list">
+            <li>Step your right foot out to the side, then bring your left to meet it</li>
+            <li>Then step left, and bring right to meet it — keep alternating</li>
+            <li>Add big arm swings to get your heart rate up and loosen your shoulders</li>
+            <li>Add a little music here — this is meant to be fun!</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="exercise-card sage-card" onclick="toggleExercise(this)">
+        <div class="exercise-header">
+          <div class="exercise-number">W2</div>
+          <div class="exercise-header-text">
+            <div class="exercise-header-name">Hip Hinge (No Weight)</div>
+            <div class="exercise-header-meta">1 set · 10 reps</div>
+          </div>
+          <div class="exercise-chevron">▾</div>
+        </div>
+        <div class="exercise-body">
+          <div class="exercise-sets-row">
+            <div class="exercise-set-item"><div class="exercise-set-value">1</div><div class="exercise-set-label">Set</div></div>
+            <div class="exercise-set-item"><div class="exercise-set-value">10</div><div class="exercise-set-label">Reps</div></div>
+            <div class="exercise-set-item"><div class="exercise-set-value">—</div><div class="exercise-set-label">Rest</div></div>
+          </div>
+          <ul class="cue-list">
+            <li>Stand with feet hip-width apart, slight bend in the knees</li>
+            <li>Push your hips back as if closing a car door with your bottom</li>
+            <li>Let your hands slide down your thighs as you hinge — back stays flat</li>
+            <li>Feel a gentle stretch in your hamstrings at the bottom</li>
+            <li>Drive your hips forward to return to standing — squeeze glutes at the top</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="exercise-card sage-card" onclick="toggleExercise(this)">
+        <div class="exercise-header">
+          <div class="exercise-number">W3</div>
+          <div class="exercise-header-text">
+            <div class="exercise-header-name">Arm Circles & Shoulder Rolls</div>
+            <div class="exercise-header-meta">1 set · 30 seconds</div>
+          </div>
+          <div class="exercise-chevron">▾</div>
+        </div>
+        <div class="exercise-body">
+          <div class="exercise-sets-row">
+            <div class="exercise-set-item"><div class="exercise-set-value">1</div><div class="exercise-set-label">Set</div></div>
+            <div class="exercise-set-item"><div class="exercise-set-value">30s</div><div class="exercise-set-label">Duration</div></div>
+            <div class="exercise-set-item"><div class="exercise-set-value">—</div><div class="exercise-set-label">Rest</div></div>
+          </div>
+          <ul class="cue-list">
+            <li>Make small then large circles with your arms — 15s forward, 15s backward</li>
+            <li>Then roll your shoulders up, back and down slowly 5 times</li>
+            <li>This releases tension from feeding posture and warms the shoulder joint</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="wo-section-title">Main Workout · Circuit · 3 Rounds · ~20 minutes</div>
+
+      <div class="exercise-card sage-card" onclick="toggleExercise(this)">
+        <div class="exercise-header">
+          <div class="exercise-number">1</div>
+          <div class="exercise-header-text">
+            <div class="exercise-header-name">KB / DB Romanian Deadlift</div>
+            <div class="exercise-header-meta">3 sets · 12 reps · 30s rest</div>
+          </div>
+          <div class="exercise-chevron">▾</div>
+        </div>
+        <div class="exercise-body">
+          <div class="exercise-sets-row">
+            <div class="exercise-set-item"><div class="exercise-set-value">3</div><div class="exercise-set-label">Sets</div></div>
+            <div class="exercise-set-item"><div class="exercise-set-value">12</div><div class="exercise-set-label">Reps</div></div>
+            <div class="exercise-set-item"><div class="exercise-set-value">30s</div><div class="exercise-set-label">Rest</div></div>
+          </div>
+          <ul class="cue-list">
+            <li>Hold a KB or DB in each hand in front of your thighs, palms facing you</li>
+            <li>Soft bend in the knees — this is a hip hinge, not a squat</li>
+            <li>Push your hips back and let the weights slide down your legs</li>
+            <li>Go until you feel a strong stretch in your hamstrings — usually mid-shin</li>
+            <li>Drive hips forward and squeeze glutes to stand back up</li>
+            <li>Keep the weights close to your body the whole time — no swinging</li>
+          </ul>
+          <div class="postpartum-tip">💗 <span>One of the best exercises for rebuilding your posterior chain (glutes and hamstrings) after pregnancy. Start with a light weight and focus on feeling the hamstrings work.</span></div>
+        </div>
+      </div>
+
+      <div class="exercise-card sage-card" onclick="toggleExercise(this)">
+        <div class="exercise-header">
+          <div class="exercise-number">2</div>
+          <div class="exercise-header-text">
+            <div class="exercise-header-name">Reverse Lunge</div>
+            <div class="exercise-header-meta">3 sets · 10 reps each leg · 30s rest · Bodyweight or DBs</div>
+          </div>
+          <div class="exercise-chevron">▾</div>
+        </div>
+        <div class="exercise-body">
+          <div class="exercise-sets-row">
+            <div class="exercise-set-item"><div class="exercise-set-value">3</div><div class="exercise-set-label">Sets</div></div>
+            <div class="exercise-set-item"><div class="exercise-set-value">10</div><div class="exercise-set-label">Each leg</div></div>
+            <div class="exercise-set-item"><div class="exercise-set-value">30s</div><div class="exercise-set-label">Rest</div></div>
+          </div>
+          <ul class="cue-list">
+            <li>Stand tall, feet hip-width apart</li>
+            <li>Step one foot back and lower your back knee toward the floor</li>
+            <li>Front knee stays above (not past) your front toes</li>
+            <li>Your front shin should be roughly vertical at the bottom</li>
+            <li>Push through your front heel to return to standing</li>
+            <li>Keep your chest upright — hands on hips or holding light DBs</li>
+          </ul>
+          <div class="postpartum-tip">💗 <span>Reverse lunges are gentler on the knees than forward lunges and easier to control — ideal while rebuilding strength and balance after pregnancy.</span></div>
+        </div>
+      </div>
+
+      <div class="exercise-card sage-card" onclick="toggleExercise(this)">
+        <div class="exercise-header">
+          <div class="exercise-number">3</div>
+          <div class="exercise-header-text">
+            <div class="exercise-header-name">Resistance Band Chest Press</div>
+            <div class="exercise-header-meta">3 sets · 12 reps · 30s rest · Band anchored behind you</div>
+          </div>
+          <div class="exercise-chevron">▾</div>
+        </div>
+        <div class="exercise-body">
+          <div class="exercise-sets-row">
+            <div class="exercise-set-item"><div class="exercise-set-value">3</div><div class="exercise-set-label">Sets</div></div>
+            <div class="exercise-set-item"><div class="exercise-set-value">12</div><div class="exercise-set-label">Reps</div></div>
+            <div class="exercise-set-item"><div class="exercise-set-value">30s</div><div class="exercise-set-label">Rest</div></div>
+          </div>
+          <ul class="cue-list">
+            <li>Anchor the band behind you at chest height (door frame or post)</li>
+            <li>Hold one end in each hand at chest level, elbows bent</li>
+            <li>Stand in a split stance (one foot forward) for stability</li>
+            <li>Press both hands forward until arms are extended — don't lock elbows</li>
+            <li>Slowly return to the start — control the band on the way back</li>
+            <li>Keep your core braced and avoid leaning back as you press</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="exercise-card sage-card" onclick="toggleExercise(this)">
+        <div class="exercise-header">
+          <div class="exercise-number">4</div>
+          <div class="exercise-header-text">
+            <div class="exercise-header-name">Bent-Over Dumbbell Row</div>
+            <div class="exercise-header-meta">3 sets · 12 reps · 30s rest</div>
+          </div>
+          <div class="exercise-chevron">▾</div>
+        </div>
+        <div class="exercise-body">
+          <div class="exercise-sets-row">
+            <div class="exercise-set-item"><div class="exercise-set-value">3</div><div class="exercise-set-label">Sets</div></div>
+            <div class="exercise-set-item"><div class="exercise-set-value">12</div><div class="exercise-set-label">Reps</div></div>
+            <div class="exercise-set-item"><div class="exercise-set-value">30s</div><div class="exercise-set-label">Rest</div></div>
+          </div>
+          <ul class="cue-list">
+            <li>Hold a DB in each hand, hinge forward from the hips about 45 degrees</li>
+            <li>Let the weights hang down in front of you, palms facing each other</li>
+            <li>Pull both elbows back and up toward your hips — squeeze shoulder blades</li>
+            <li>Lower back down with control — full arm extension</li>
+            <li>Keep your back flat throughout — no rounding</li>
+            <li>Breathe out as you pull, in as you lower</li>
+          </ul>
+          <div class="postpartum-tip">💗 <span>Pairs perfectly with the chest press — one pulls, one pushes. Together they restore balanced upper body strength and help counteract the rounded posture from feeding.</span></div>
+        </div>
+      </div>
+
+      <div class="exercise-card sage-card" onclick="toggleExercise(this)">
+        <div class="exercise-header">
+          <div class="exercise-number">5</div>
+          <div class="exercise-header-text">
+            <div class="exercise-header-name">Low-Impact Jumping Jacks</div>
+            <div class="exercise-header-meta">3 sets · 30 seconds · 20s rest</div>
+          </div>
+          <div class="exercise-chevron">▾</div>
+        </div>
+        <div class="exercise-body">
+          <div class="exercise-sets-row">
+            <div class="exercise-set-item"><div class="exercise-set-value">3</div><div class="exercise-set-label">Sets</div></div>
+            <div class="exercise-set-item"><div class="exercise-set-value">30s</div><div class="exercise-set-label">Duration</div></div>
+            <div class="exercise-set-item"><div class="exercise-set-value">20s</div><div class="exercise-set-label">Rest</div></div>
+          </div>
+          <ul class="cue-list">
+            <li><strong>Low-impact version:</strong> Step one foot out to the side while raising both arms overhead, then step back in — alternate sides</li>
+            <li>This gives you the cardio benefit without the impact of jumping</li>
+            <li>Move at a pace that raises your heart rate but you can still talk</li>
+            <li>If jumping feels fine and comfortable, regular jacks are also great</li>
+            <li>If any leaking occurs, stick to the step version — that's completely normal and worth addressing with a physio</li>
+          </ul>
+          <div class="postpartum-tip">💗 <span>High-impact movements like jumping can stress a post-partum pelvic floor. Always use the low-impact option until you've been cleared by a women's health physio for impact exercise.</span></div>
+        </div>
+      </div>
+
+      <div class="exercise-card sage-card" onclick="toggleExercise(this)">
+        <div class="exercise-header">
+          <div class="exercise-number">6</div>
+          <div class="exercise-header-text">
+            <div class="exercise-header-name">Plank Hold</div>
+            <div class="exercise-header-meta">3 sets · 20–30 seconds · 20s rest · Knees or full</div>
+          </div>
+          <div class="exercise-chevron">▾</div>
+        </div>
+        <div class="exercise-body">
+          <div class="exercise-sets-row">
+            <div class="exercise-set-item"><div class="exercise-set-value">3</div><div class="exercise-set-label">Sets</div></div>
+            <div class="exercise-set-item"><div class="exercise-set-value">20–30s</div><div class="exercise-set-label">Hold</div></div>
+            <div class="exercise-set-item"><div class="exercise-set-value">20s</div><div class="exercise-set-label">Rest</div></div>
+          </div>
+          <ul class="cue-list">
+            <li><strong>Knee plank:</strong> Knees on the floor, arms straight, body in a straight line from knees to head</li>
+            <li><strong>Full plank:</strong> Toes on the floor, arms straight, straight line from heels to head</li>
+            <li>Squeeze your core gently — imagine pulling your belly button toward your spine</li>
+            <li>Keep breathing — don't hold your breath!</li>
+            <li>Hips shouldn't sag down or poke up — find the straight line</li>
+            <li>Start with the knee version until you can hold 30s comfortably</li>
+          </ul>
+          <div class="postpartum-tip">💗 <span>If you notice any doming or coning of your abdomen during a plank (a ridge running down the middle), drop to your knees or stop — this can indicate diastasis recti that needs specific attention.</span></div>
+        </div>
+      </div>
+
+      <div class="wo-section-title">Cool-Down · 3 minutes</div>
+      <div class="card" style="padding:16px 20px;">
+        <div class="cooldown-item">
+          <div class="cooldown-icon">🦢</div>
+          <div><div class="cooldown-name">Pigeon Pose (or Figure-4 on Back)</div><div class="cooldown-time">30 seconds each side — deep hip flexor and glute stretch</div></div>
+        </div>
+        <div class="cooldown-item">
+          <div class="cooldown-icon">🌿</div>
+          <div><div class="cooldown-name">Standing Quad Stretch</div><div class="cooldown-time">20–30 seconds each leg — hold a wall for balance if needed</div></div>
+        </div>
+        <div class="cooldown-item">
+          <div class="cooldown-icon">💫</div>
+          <div><div class="cooldown-name">Gentle Spinal Twist (Seated)</div><div class="cooldown-time">20 seconds each side — sit tall, rotate gently from the waist</div></div>
+        </div>
+        <div class="cooldown-item">
+          <div class="cooldown-icon">💗</div>
+          <div><div class="cooldown-name">Take a moment</div><div class="cooldown-time">You showed up. You did it. That's everything.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ LOG WORKOUT ══ -->
+  <div id="tab-log" class="section">
+    <div class="section-heading">
+      <div class="section-heading-bar"></div>
+      <div><h2>Log a Workout</h2><span>Record today's session</span></div>
+    </div>
+
+    <div class="card">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Date</label>
+          <input type="date" id="log-date">
+        </div>
+        <div class="form-group">
+          <label>Workout</label>
+          <select id="log-workout">
+            <option value="A">Workout A — Strength & Core</option>
+            <option value="B">Workout B — Cardio & Strength</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Duration (minutes)</label>
+          <input type="number" id="log-duration" min="10" max="90" placeholder="e.g. 28">
+        </div>
+        <div class="form-group">
+          <label>Week Number</label>
+          <input type="number" id="log-week" min="1" max="12" placeholder="e.g. 1">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Energy Before Session (1–10)</label>
+        <div class="rating-row" id="rating-energy"></div>
+      </div>
+
+      <div class="form-group">
+        <label>Session Rating (1–10)</label>
+        <div class="rating-row" id="rating-session"></div>
+      </div>
+
+      <div class="form-group">
+        <label>Mood After (1–10)</label>
+        <div class="rating-row" id="rating-mood"></div>
+      </div>
+
+      <div class="form-group">
+        <label>Notes — how did it feel?</label>
+        <textarea id="log-notes" placeholder="e.g. Felt stronger on glute bridges. Tired but proud. Baby slept so I got the full 30 min!"></textarea>
+      </div>
+
+      <button class="btn btn-primary" onclick="saveWorkout()">✓ Save Session</button>
+    </div>
+  </div>
+
+  <!-- ══ HISTORY ══ -->
+  <div id="tab-history" class="section">
+    <div class="section-heading">
+      <div class="section-heading-bar"></div>
+      <div><h2>Workout History</h2><span>All logged sessions</span></div>
+    </div>
+    <div id="history-list"></div>
+  </div>
+
+  <!-- ══ STRENGTH ══ -->
+  <div id="tab-strength" class="section">
+    <div class="section-heading">
+      <div class="section-heading-bar"></div>
+      <div><h2>Strength Tracker</h2><span>Log weights & reps — watch yourself grow</span></div>
+    </div>
+
+    <div class="note-box sage">
+      💪 Add 0.5–1 kg or 1–2 reps per week when the last 2 reps feel easy. Small consistent increases = big results.
+    </div>
+
+    <div class="card">
+      <div class="form-group" style="margin-bottom:20px;">
+        <label>Select Week</label>
+        <select id="strength-week" onchange="renderStrengthTable()">
+          <option value="1">Week 1</option><option value="2">Week 2</option>
+          <option value="3">Week 3</option><option value="4">Week 4</option>
+          <option value="5">Week 5</option><option value="6">Week 6</option>
+          <option value="7">Week 7</option><option value="8">Week 8</option>
+          <option value="9">Week 9</option><option value="10">Week 10</option>
+          <option value="11">Week 11</option><option value="12">Week 12</option>
+        </select>
+      </div>
+
+      <div id="strength-table"></div>
+      <div style="margin-top:20px;">
+        <button class="btn btn-primary btn-sm" onclick="saveStrength()">Save Week</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ MEASUREMENTS ══ -->
+  <div id="tab-measurements" class="section">
+    <div class="section-heading">
+      <div class="section-heading-bar"></div>
+      <div><h2>Body Measurements</h2><span>Monthly check-ins</span></div>
+    </div>
+
+    <div class="note-box">
+      📏 Take measurements once a month, same time of day. While breastfeeding, aim for no more than 0.5 kg loss/week. Focus on how you <em>feel</em>, not just the numbers.
+    </div>
+
+    <div class="card">
+      <div class="form-group" style="margin-bottom:20px;">
+        <label>Select Month</label>
+        <select id="measurement-month">
+          <option value="start">Starting Point</option>
+          <option value="1">Month 1</option>
+          <option value="2">Month 2</option>
+          <option value="3">Month 3</option>
+        </select>
+      </div>
+
+      <div class="measurement-grid" id="measurement-grid"></div>
+
+      <div style="margin-top:20px;">
+        <button class="btn btn-primary btn-sm" onclick="saveMeasurements()">Save Measurements</button>
+      </div>
+    </div>
+
+    <div class="card" id="measurements-comparison" style="display:none;">
+      <div class="card-title">Progress Overview</div>
+      <div id="measurements-compare-grid" class="measurement-grid"></div>
+    </div>
+  </div>
+
+  <!-- ══ MOOD & ENERGY ══ -->
+  <div id="tab-mood" class="section">
+    <div class="section-heading">
+      <div class="section-heading-bar"></div>
+      <div><h2>Mood & Energy</h2><span>Your wellbeing matters most</span></div>
+    </div>
+
+    <div class="note-box sage">
+      🌿 Sleep deprivation is real. Log how you're feeling — over weeks you'll start to see exercise lifting your mood and energy, even on hard days.
+    </div>
+
+    <div class="card">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Date</label>
+          <input type="date" id="mood-date">
+        </div>
+        <div class="form-group">
+          <label>Week</label>
+          <input type="number" id="mood-week" min="1" max="12" placeholder="1">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Energy Level (1–10)</label>
+        <div class="rating-row" id="rating-mood-energy"></div>
+      </div>
+      <div class="form-group">
+        <label>Mood (1–10)</label>
+        <div class="rating-row" id="rating-mood-mood"></div>
+      </div>
+      <div class="form-group">
+        <label>Sleep Quality (1–10)</label>
+        <div class="rating-row" id="rating-mood-sleep"></div>
+      </div>
+      <div class="form-group">
+        <label>Notes</label>
+        <textarea id="mood-notes" placeholder="How are you really feeling? Wins, struggles, baby updates..."></textarea>
+      </div>
+      <button class="btn btn-primary" onclick="saveMoodEntry()">Save Entry</button>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Wellbeing Over Time</div>
+      <canvas id="moodChart" height="180"></canvas>
+      <div class="mood-legend">
+        <div class="legend-item"><div class="legend-dot" style="background:var(--rose)"></div>Energy</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--mauve)"></div>Mood</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--sage)"></div>Sleep</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Mood Log</div>
+      <div id="mood-history"></div>
+    </div>
+  </div>
+
+  <!-- ══ HABITS ══ -->
+  <div id="tab-habits" class="section">
+    <div class="section-heading">
+      <div class="section-heading-bar"></div>
+      <div><h2>Weekly Habits</h2><span>Small steps, big change</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">This Week's Checklist</div>
+      <div class="card-sub" id="habit-week-label">Week 1 · tap to check off</div>
+      <ul class="habit-list" id="habit-list"></ul>
+      <div style="margin-top:20px; display:flex; gap:10px; align-items:center;">
+        <div style="flex:1;">
+          <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
+            <span style="font-size:12px; color:var(--grey)">Habits completed</span>
+            <span style="font-size:12px; font-weight:700; color:var(--rose)" id="habit-count">0 / 8</span>
+          </div>
+          <div class="progress-bar-wrap">
+            <div class="progress-bar-fill" id="habit-progress" style="width:0%"></div>
+          </div>
+        </div>
+        <button class="btn btn-secondary btn-sm" onclick="resetHabits()">Reset</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast">✓ Saved!</div>
+
+<script>
+// ── Workout detail tab ────────────────────────────────────────────────────
+function selectWorkout(type) {
+  document.getElementById('workout-detail-A').style.display = type === 'A' ? 'block' : 'none';
+  document.getElementById('workout-detail-B').style.display = type === 'B' ? 'block' : 'none';
+  document.querySelectorAll('.workout-select-btn').forEach((btn, i) => {
+    btn.classList.toggle('active-wo', (i === 0 && type === 'A') || (i === 1 && type === 'B'));
+  });
+}
+
+function toggleExercise(card) {
+  card.classList.toggle('open');
+}
+
+// ── Storage helpers ────────────────────────────────────────────────────────
+const store = {
+  get: k => { try { return JSON.parse(localStorage.getItem(k)) || null; } catch { return null; } },
+  set: (k, v) => localStorage.setItem(k, JSON.stringify(v)),
+};
+
+// ── State ──────────────────────────────────────────────────────────────────
+let ratings = { energy: 0, session: 0, mood: 0 };
+let moodRatings = { energy: 0, mood: 0, sleep: 0 };
+
+const HABITS = [
+  { text: "Workout A completed",             freq: "Weekly" },
+  { text: "Workout B completed",             freq: "Weekly" },
+  { text: "30-min walk (at least 2 days)",   freq: "2×/week" },
+  { text: "2.5–3.5 L water daily",           freq: "Daily" },
+  { text: "Protein at every meal",           freq: "Daily" },
+  { text: "Pelvic floor exercises",          freq: "Daily" },
+  { text: "5-min cool-down stretch",         freq: "Each WO" },
+  { text: "Celebrated one win today",        freq: "Daily" },
+];
+
+const STRENGTH_EXERCISES = [
+  { name: "Glute Bridge — weight (kg)", workout: "A" },
+  { name: "Goblet Squat — weight (kg)", workout: "A" },
+  { name: "Resistance Band Row — band level", workout: "A" },
+  { name: "Shoulder Press — weight (kg)", workout: "A" },
+  { name: "Dead Bug — reps each side", workout: "A" },
+  { name: "Clamshell — reps each side", workout: "A" },
+  { name: "Romanian Deadlift — weight (kg)", workout: "B" },
+  { name: "Reverse Lunge — weight or BW", workout: "B" },
+  { name: "Band Chest Press — band level", workout: "B" },
+  { name: "Bent-Over Row — weight (kg)", workout: "B" },
+  { name: "Jumping Jacks — duration (s)", workout: "B" },
+  { name: "Plank Hold — duration (s)", workout: "B" },
+];
+
+const MEASUREMENT_FIELDS = [
+  "Weight (kg)", "Chest (cm)", "Waist (cm)", "Hips (cm)",
+  "Left Thigh (cm)", "Right Thigh (cm)", "Upper Arm (cm)",
+  "Energy (avg 1–10)", "Mood (avg 1–10)"
+];
+
+// ── Tab switching ──────────────────────────────────────────────────────────
+function showTab(name) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  event.target.classList.add('active');
+  if (name === 'dashboard')    updateDashboard();
+  if (name === 'history')      renderHistory();
+  if (name === 'strength')     renderStrengthTable();
+  if (name === 'measurements') renderMeasurements();
+  if (name === 'mood')         renderMoodSection();
+  if (name === 'habits')       renderHabits();
+}
+
+// ── Toast ──────────────────────────────────────────────────────────────────
+function toast(msg = '✓ Saved!') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ── Rating widget ──────────────────────────────────────────────────────────
+function buildRating(containerId, stateKey, obj) {
+  const c = document.getElementById(containerId);
+  if (!c) return;
+  c.innerHTML = '';
+  for (let i = 1; i <= 10; i++) {
+    const b = document.createElement('button');
+    b.className = 'rating-btn' + (obj[stateKey] === i ? ' selected' : '');
+    b.textContent = i;
+    b.onclick = () => {
+      obj[stateKey] = i;
+      buildRating(containerId, stateKey, obj);
+    };
+    c.appendChild(b);
+  }
+}
+
+// ── Init page ──────────────────────────────────────────────────────────────
+function init() {
+  // Set today's date on forms
+  const today = new Date().toISOString().split('T')[0];
+  const logDate = document.getElementById('log-date');
+  const moodDate = document.getElementById('mood-date');
+  if (logDate) logDate.value = today;
+  if (moodDate) moodDate.value = today;
+
+  // Build rating widgets
+  buildRating('rating-energy', 'energy', ratings);
+  buildRating('rating-session', 'session', ratings);
+  buildRating('rating-mood', 'mood', ratings);
+  buildRating('rating-mood-energy', 'energy', moodRatings);
+  buildRating('rating-mood-mood', 'mood', moodRatings);
+  buildRating('rating-mood-sleep', 'sleep', moodRatings);
+
+  updateDashboard();
+  renderHabits();
+
+  // Auto-set week number based on programme start
+  const startDate = store.get('programme-start');
+  if (!startDate) {
+    store.set('programme-start', today);
+  }
+  const weekEl = document.getElementById('log-week');
+  const moodWeekEl = document.getElementById('mood-week');
+  const weekNum = getWeekNumber();
+  if (weekEl) weekEl.value = weekNum;
+  if (moodWeekEl) moodWeekEl.value = weekNum;
+}
+
+function getWeekNumber() {
+  const start = store.get('programme-start');
+  if (!start) return 1;
+  const diff = (new Date() - new Date(start)) / (1000 * 60 * 60 * 24 * 7);
+  return Math.min(12, Math.max(1, Math.ceil(diff + 0.01)));
+}
+
+// ── Dashboard ─────────────────────────────────────────────────────────────
+function updateDashboard() {
+  const workouts = store.get('workouts') || [];
+  const moodLog  = store.get('mood-log') || [];
+
+  document.getElementById('stat-total').textContent = workouts.length;
+
+  const weekNum = getWeekNumber();
+  document.getElementById('stat-week').textContent = weekNum;
+
+  // Sessions this week
+  const weekStart = new Date(); weekStart.setDate(weekStart.getDate() - weekStart.getDay() + 1);
+  const thisWeek  = workouts.filter(w => new Date(w.date) >= weekStart).length;
+  document.getElementById('stat-streak').textContent = thisWeek + '/2';
+
+  // Avg mood & energy
+  if (workouts.length) {
+    const avgMood   = (workouts.reduce((a, w) => a + (w.mood || 0), 0) / workouts.length).toFixed(1);
+    const avgEnergy = (workouts.reduce((a, w) => a + (w.energy || 0), 0) / workouts.length).toFixed(1);
+    document.getElementById('stat-mood').textContent   = avgMood > 0 ? avgMood : '—';
+    document.getElementById('stat-energy').textContent = avgEnergy > 0 ? avgEnergy : '—';
+  }
+
+  // Progress bar
+  const pct = Math.round((workouts.length / 24) * 100);
+  document.getElementById('progress-pct').textContent  = Math.min(100, pct) + '%';
+  document.getElementById('progress-fill').style.width = Math.min(100, pct) + '%';
+
+  // Phase indicator
+  [1, 2, 3].forEach(p => {
+    const el = document.getElementById('phase-' + p);
+    el.classList.remove('active-phase');
+    if ((p === 1 && weekNum <= 4) || (p === 2 && weekNum >= 5 && weekNum <= 8) || (p === 3 && weekNum >= 9)) {
+      el.classList.add('active-phase');
+    }
+  });
+
+  // Recent activity
+  const recent = document.getElementById('dashboard-recent');
+  const last3  = [...workouts].reverse().slice(0, 3);
+  if (!last3.length) {
+    recent.innerHTML = '<div class="empty-state"><div class="empty-state-icon">🌸</div><p>No sessions yet — log your first workout!</p></div>';
+  } else {
+    recent.innerHTML = last3.map(w => renderLogEntryHTML(w)).join('');
+  }
+}
+
+// ── Save workout ──────────────────────────────────────────────────────────
+function saveWorkout() {
+  const date    = document.getElementById('log-date').value;
+  const workout = document.getElementById('log-workout').value;
+  const dur     = document.getElementById('log-duration').value;
+  const week    = document.getElementById('log-week').value;
+  const notes   = document.getElementById('log-notes').value;
+
+  if (!date || !workout) { toast('⚠ Please fill in date & workout type'); return; }
+
+  const entry = {
+    id: Date.now(),
+    date, workout, duration: dur, week: parseInt(week) || 1,
+    energy: ratings.energy, session: ratings.session, mood: ratings.mood,
+    notes
+  };
+
+  const workouts = store.get('workouts') || [];
+  workouts.push(entry);
+  store.set('workouts', workouts);
+
+  // Reset
+  ratings = { energy: 0, session: 0, mood: 0 };
+  buildRating('rating-energy', 'energy', ratings);
+  buildRating('rating-session', 'session', ratings);
+  buildRating('rating-mood', 'mood', ratings);
+  document.getElementById('log-notes').value = '';
+
+  toast('🌸 Session logged — well done!');
+  updateDashboard();
+}
+
+// ── Render log entry ─────────────────────────────────────────────────────
+function renderLogEntryHTML(w, showDelete = false) {
+  const d = new Date(w.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+  const wLabel = w.workout === 'A' ? 'Workout A — Strength & Core' : 'Workout B — Cardio & Strength';
+  const delBtn = showDelete ? `<span class="log-delete" onclick="deleteWorkout(${w.id})">×</span>` : '';
+  return `
+    <div class="log-entry ${w.workout === 'B' ? 'workout-b' : ''}">
+      <div class="log-badge ${w.workout.toLowerCase()}">${w.workout}</div>
+      <div>
+        <div class="log-date">${d} · Week ${w.week || '?'}</div>
+        <div class="log-title">${wLabel}</div>
+        <div class="log-meta">
+          ${w.duration ? `<span>⏱ ${w.duration} min</span>` : ''}
+          ${w.energy   ? `<span>⚡ Energy ${w.energy}/10</span>` : ''}
+          ${w.session  ? `<span>⭐ Rating ${w.session}/10</span>` : ''}
+          ${w.mood     ? `<span>💗 Mood ${w.mood}/10</span>` : ''}
+        </div>
+        ${w.notes ? `<div class="log-notes">"${w.notes}"</div>` : ''}
+      </div>
+      ${delBtn}
+    </div>`;
+}
+
+function renderHistory() {
+  const workouts = (store.get('workouts') || []).reverse();
+  const el = document.getElementById('history-list');
+  if (!workouts.length) {
+    el.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📋</div><p>No sessions logged yet</p></div>';
+  } else {
+    el.innerHTML = workouts.map(w => renderLogEntryHTML(w, true)).join('');
+  }
+}
+
+function deleteWorkout(id) {
+  const workouts = (store.get('workouts') || []).filter(w => w.id !== id);
+  store.set('workouts', workouts);
+  renderHistory();
+  updateDashboard();
+  toast('Session removed');
+}
+
+// ── Strength tracker ──────────────────────────────────────────────────────
+function renderStrengthTable() {
+  const week = document.getElementById('strength-week').value;
+  const saved = store.get('strength') || {};
+  const weekData = saved[`week-${week}`] || {};
+
+  let htmlA = '', htmlB = '';
+  STRENGTH_EXERCISES.forEach((ex, i) => {
+    const val = weekData[i] || '';
+    const row = `
+      <div class="exercise-row">
+        <div class="exercise-name">${ex.name}</div>
+        <input class="exercise-input" type="text" id="str-${i}" value="${val}" placeholder="—">
+      </div>`;
+    if (ex.workout === 'A') htmlA += row;
+    else htmlB += row;
+  });
+
+  document.getElementById('strength-table').innerHTML = `
+    <div class="exercise-block">
+      <div class="exercise-block-title">
+        <h3>Workout A</h3><span class="workout-tag a">Strength & Core</span>
+      </div>
+      <div class="exercise-row" style="background:none; border-bottom:none; padding-top:0; margin-bottom:4px;">
+        <div></div>
+        <div class="exercise-week-label">Value</div>
+      </div>
+      ${htmlA}
+    </div>
+    <div class="exercise-block" style="margin-top:20px;">
+      <div class="exercise-block-title">
+        <h3>Workout B</h3><span class="workout-tag b">Cardio & Strength</span>
+      </div>
+      ${htmlB}
+    </div>`;
+}
+
+function saveStrength() {
+  const week = document.getElementById('strength-week').value;
+  const saved = store.get('strength') || {};
+  const weekData = {};
+  STRENGTH_EXERCISES.forEach((_, i) => {
+    weekData[i] = document.getElementById(`str-${i}`)?.value || '';
+  });
+  saved[`week-${week}`] = weekData;
+  store.set('strength', saved);
+  toast('💪 Strength data saved!');
+}
+
+// ── Measurements ──────────────────────────────────────────────────────────
+function renderMeasurements() {
+  const month  = document.getElementById('measurement-month').value;
+  const saved  = store.get('measurements') || {};
+  const data   = saved[month] || {};
+  const grid   = document.getElementById('measurement-grid');
+
+  grid.innerHTML = MEASUREMENT_FIELDS.map(f => {
+    const key = f.replace(/[^a-z]/gi, '_');
+    const val = data[key] || '';
+    return `
+      <div class="measurement-item">
+        <label>${f}</label>
+        <input class="exercise-input" type="text" id="meas-${key}" value="${val}" placeholder="—">
+      </div>`;
+  }).join('');
+
+  // Comparison
+  const startData = saved['start'];
+  if (startData && month !== 'start') {
+    const compCard = document.getElementById('measurements-comparison');
+    compCard.style.display = 'block';
+    const compGrid = document.getElementById('measurements-compare-grid');
+    compGrid.innerHTML = MEASUREMENT_FIELDS.map(f => {
+      const key = f.replace(/[^a-z]/gi, '_');
+      const start   = parseFloat(startData[key]) || null;
+      const current = parseFloat(data[key]) || null;
+      let changeHtml = '';
+      if (start && current) {
+        const diff  = (current - start).toFixed(1);
+        const isGood = f.includes('Weight') || f.includes('Waist') || f.includes('Hip') || f.includes('Thigh') || f.includes('Chest') ? diff < 0 : diff > 0;
+        const cls   = diff < 0 ? 'neg' : 'pos';
+        changeHtml  = `<div class="measurement-change ${cls}">${diff > 0 ? '+' : ''}${diff} from start</div>`;
+      }
+      return `
+        <div class="measurement-item">
+          <label>${f}</label>
+          <div class="measurement-value">${current || '—'}</div>
+          ${changeHtml}
+        </div>`;
+    }).join('');
+  }
+}
+
+function saveMeasurements() {
+  const month = document.getElementById('measurement-month').value;
+  const saved = store.get('measurements') || {};
+  const data  = {};
+  MEASUREMENT_FIELDS.forEach(f => {
+    const key  = f.replace(/[^a-z]/gi, '_');
+    data[key]  = document.getElementById(`meas-${key}`)?.value || '';
+  });
+  saved[month] = data;
+  store.set('measurements', saved);
+  renderMeasurements();
+  toast('📏 Measurements saved!');
+}
+
+// ── Mood & Energy ─────────────────────────────────────────────────────────
+function saveMoodEntry() {
+  const entry = {
+    id:    Date.now(),
+    date:  document.getElementById('mood-date').value,
+    week:  document.getElementById('mood-week').value,
+    energy: moodRatings.energy,
+    mood:   moodRatings.mood,
+    sleep:  moodRatings.sleep,
+    notes:  document.getElementById('mood-notes').value,
+  };
+  const log = store.get('mood-log') || [];
+  log.push(entry);
+  store.set('mood-log', log);
+
+  moodRatings = { energy: 0, mood: 0, sleep: 0 };
+  buildRating('rating-mood-energy', 'energy', moodRatings);
+  buildRating('rating-mood-mood', 'mood', moodRatings);
+  buildRating('rating-mood-sleep', 'sleep', moodRatings);
+  document.getElementById('mood-notes').value = '';
+
+  renderMoodSection();
+  toast('🌿 Wellbeing entry saved!');
+}
+
+function renderMoodSection() {
+  const log = store.get('mood-log') || [];
+
+  // Chart
+  const canvas = document.getElementById('moodChart');
+  if (canvas) drawMoodChart(canvas, log.slice(-12));
+
+  // History list
+  const histEl = document.getElementById('mood-history');
+  const reversed = [...log].reverse().slice(0, 20);
+  if (!reversed.length) {
+    histEl.innerHTML = '<div class="empty-state"><div class="empty-state-icon">💗</div><p>Start logging your wellbeing!</p></div>';
+  } else {
+    histEl.innerHTML = reversed.map(e => {
+      const d = new Date(e.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+      return `
+        <div class="log-entry" style="border-left-color:var(--mauve)">
+          <div class="log-badge" style="background:var(--blush);color:var(--mauve);font-size:20px">💗</div>
+          <div>
+            <div class="log-date">${d} · Week ${e.week || '?'}</div>
+            <div class="log-meta">
+              ${e.energy ? `<span>⚡ Energy ${e.energy}/10</span>` : ''}
+              ${e.mood   ? `<span>😊 Mood ${e.mood}/10</span>` : ''}
+              ${e.sleep  ? `<span>😴 Sleep ${e.sleep}/10</span>` : ''}
+            </div>
+            ${e.notes ? `<div class="log-notes">"${e.notes}"</div>` : ''}
+          </div>
+          <span class="log-delete" onclick="deleteMoodEntry(${e.id})">×</span>
+        </div>`;
+    }).join('');
+  }
+}
+
+function deleteMoodEntry(id) {
+  const log = (store.get('mood-log') || []).filter(e => e.id !== id);
+  store.set('mood-log', log);
+  renderMoodSection();
+  toast('Entry removed');
+}
+
+// ── Simple canvas chart ───────────────────────────────────────────────────
+function drawMoodChart(canvas, data) {
+  const ctx  = canvas.getContext('2d');
+  const W    = canvas.offsetWidth || 800;
+  const H    = canvas.height = 180;
+  canvas.width = W;
+  ctx.clearRect(0, 0, W, H);
+
+  if (!data.length) {
+    ctx.fillStyle = '#aaa';
+    ctx.font      = '13px DM Sans, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('Log some entries to see your chart', W/2, H/2);
+    return;
+  }
+
+  const pad   = { l: 30, r: 20, t: 20, b: 30 };
+  const cW    = W - pad.l - pad.r;
+  const cH    = H - pad.t - pad.b;
+  const xStep = cW / Math.max(data.length - 1, 1);
+
+  const lines = [
+    { key: 'energy', color: '#C2506A' },
+    { key: 'mood',   color: '#6B4C72' },
+    { key: 'sleep',  color: '#5C7F6A' },
+  ];
+
+  // Grid
+  ctx.strokeStyle = '#f0e8e8';
+  ctx.lineWidth   = 1;
+  for (let i = 0; i <= 10; i += 2) {
+    const y = pad.t + cH - (i / 10) * cH;
+    ctx.beginPath(); ctx.moveTo(pad.l, y); ctx.lineTo(W - pad.r, y); ctx.stroke();
+    ctx.fillStyle = '#bbb'; ctx.font = '10px sans-serif'; ctx.textAlign = 'right';
+    ctx.fillText(i, pad.l - 4, y + 4);
+  }
+
+  // Lines
+  lines.forEach(({ key, color }) => {
+    ctx.strokeStyle = color;
+    ctx.lineWidth   = 2.5;
+    ctx.lineJoin    = 'round';
+    ctx.beginPath();
+    let started = false;
+    data.forEach((entry, i) => {
+      const val = entry[key];
+      if (!val) return;
+      const x = pad.l + i * xStep;
+      const y = pad.t + cH - (val / 10) * cH;
+      if (!started) { ctx.moveTo(x, y); started = true; }
+      else ctx.lineTo(x, y);
+    });
+    ctx.stroke();
+
+    // Dots
+    data.forEach((entry, i) => {
+      const val = entry[key];
+      if (!val) return;
+      const x = pad.l + i * xStep;
+      const y = pad.t + cH - (val / 10) * cH;
+      ctx.fillStyle = color;
+      ctx.beginPath(); ctx.arc(x, y, 4, 0, Math.PI * 2); ctx.fill();
+    });
+  });
+
+  // X labels (dates)
+  ctx.fillStyle = '#bbb'; ctx.font = '9px sans-serif'; ctx.textAlign = 'center';
+  data.forEach((entry, i) => {
+    const x = pad.l + i * xStep;
+    const d = new Date(entry.date);
+    const label = `${d.getDate()}/${d.getMonth()+1}`;
+    ctx.fillText(label, x, H - 6);
+  });
+}
+
+// ── Habits ────────────────────────────────────────────────────────────────
+function renderHabits() {
+  const week    = getWeekNumber();
+  const key     = `habits-week-${week}`;
+  const checked = store.get(key) || {};
+  const list    = document.getElementById('habit-list');
+  const label   = document.getElementById('habit-week-label');
+  if (label) label.textContent = `Week ${week} · tap to check off`;
+
+  list.innerHTML = HABITS.map((h, i) => `
+    <li class="habit-item ${checked[i] ? 'checked' : ''}" onclick="toggleHabit(${i})">
+      <div class="habit-check">${checked[i] ? '✓' : ''}</div>
+      <div class="habit-text">${h.text}</div>
+      <div class="habit-freq">${h.freq}</div>
+    </li>`).join('');
+
+  const count = Object.values(checked).filter(Boolean).length;
+  const countEl = document.getElementById('habit-count');
+  const progEl  = document.getElementById('habit-progress');
+  if (countEl) countEl.textContent = `${count} / ${HABITS.length}`;
+  if (progEl)  progEl.style.width  = `${(count / HABITS.length) * 100}%`;
+}
+
+function toggleHabit(index) {
+  const week    = getWeekNumber();
+  const key     = `habits-week-${week}`;
+  const checked = store.get(key) || {};
+  checked[index] = !checked[index];
+  store.set(key, checked);
+  renderHabits();
+}
+
+function resetHabits() {
+  const week = getWeekNumber();
+  store.set(`habits-week-${week}`, {});
+  renderHabits();
+}
+
+// ── Start ──────────────────────────────────────────────────────────────────
+window.addEventListener('load', init);
+window.addEventListener('resize', () => {
+  const log = store.get('mood-log') || [];
+  const canvas = document.getElementById('moodChart');
+  if (canvas) drawMoodChart(canvas, log.slice(-12));
+});
+</script>
+</body>
+</html>
